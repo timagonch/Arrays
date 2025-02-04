@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
  * under normal and edge coditions.
  * 
  * @author  Tim Goncharov
- * @version Jan 07, 2025
+ * @version Fab 04, 2025
  */
 public class Project1Test {
 
@@ -20,25 +20,11 @@ public class Project1Test {
      */
     @Before
     public void setup() {
-       runner = new Project1(10);
+        runner = new Project1(10);
     }
 
     // Put your test methods here
     // type "/junitTest" to get a skelleton of the code
-
-    /** Test for constructor with invalid capacities */
-    //@Test
-    //public void testConstructorInvalidCapacity() {
-     //   Exception exception1 = assertThrows(IllegalArgumentException.class, () -> {
-       //     new Project1(0);
-      //  });
-     //   assertEquals("Capacity must be greater than zero.", exception1.getMessage());
-
-       // Exception exception2 = assertThrows(NegativeArraySizeException.class, () -> {
-          //  new Project1(-5);
-      //  });
-       // assertEquals("Capacity must be greater than zero.", exception2.getMessage());
-    //}
 
     /**
      * Test to get the total capacity of the array.
@@ -49,7 +35,7 @@ public class Project1Test {
        // 1. set up initial conditions
        // 2. call the method
        // 3. check expected results
-       assertEquals(10,runner.getCapacity());
+        assertEquals(10,runner.getCapacity());
     }
 
     /**
@@ -91,7 +77,7 @@ public class Project1Test {
        // 3. check expected results
         assertFalse(runner.isFull());
         for (int i = 0; i < 10; i++) {
-        runner.addValue(i);
+            runner.addValue(i);
         }
         assertTrue(runner.isFull());
     }
@@ -159,7 +145,7 @@ public class Project1Test {
             assertEquals(7, runner.getValue(0));
         } catch (Exception e) {
             fail("Error was thrown when unexpected");
-            }      
+        }      
     }
 
     /**
@@ -240,7 +226,7 @@ public class Project1Test {
             fail("Expected IndexOutOfBoundsException was not thrown");
         } catch (IndexOutOfBoundsException e) {
             assertEquals("Index 0 is out of bounds. Valid range: 0 to -1", e.getMessage());
-            }
+        }
 
         // Add some values to the array
         runner.addValue(10);
@@ -264,7 +250,7 @@ public class Project1Test {
     }
 
 
-    /** Test for getMinimum() */
+    /** Test for getMinimum(). */
     @Test
     public void testGetMinimum() {
         assertEquals(Integer.MIN_VALUE, runner.getMinimum());
@@ -274,7 +260,7 @@ public class Project1Test {
         assertEquals(2, runner.getMinimum());
     }
 
-    /** Test for getMaximum() */
+    /** Test for getMaximum(). */
     @Test
     public void testGetMaximum() {
         assertEquals(Integer.MAX_VALUE, runner.getMaximum());
@@ -284,7 +270,7 @@ public class Project1Test {
         assertEquals(8, runner.getMaximum());
     }
 
-    /** Test for getRange() */
+    /** Test for getRange(). */
     @Test
     public void testGetRange() {
         runner.addValue(10);
@@ -293,8 +279,7 @@ public class Project1Test {
         assertEquals(12, runner.getRange());
     }
 
-    /** 
-     * Test for getRange() with an empty array 
+    /** Test for getRange() with an empty array. 
      */
     @Test
     public void testGetRangeEmpty() {
@@ -307,7 +292,7 @@ public class Project1Test {
         }
     }
 
-    /** Test for getAverage() */
+    /** Test for getAverage(). */
     @Test
     public void testGetAverage() {
         runner.addValue(5);
@@ -316,8 +301,7 @@ public class Project1Test {
         assertEquals(10.0, runner.getAverage(), 0.001);
     }
 
-    /** 
-     * Test for getAverage() with an empty array 
+    /** Test for getAverage() with an empty array.
      */
     @Test
     public void testGetAverageEmpty() {
@@ -330,7 +314,7 @@ public class Project1Test {
         }
     }
 
-    /** Test for addRandom() */
+    /** Test for addRandom(). */
     @Test
     public void testAddRandom() {
         runner.addRandom(5);
@@ -338,7 +322,7 @@ public class Project1Test {
     }
 
     /** 
-     * Test for addRandom() exceeding capacity 
+     * Test for addRandom() exceeding capacity.
      */
     @Test
     public void testAddRandomExceedingCapacity() {
@@ -348,14 +332,15 @@ public class Project1Test {
             fail("Expected IllegalStateException was not thrown");
         } catch (IllegalStateException e) {
             // Ensure the error message matches expected output
-            assertEquals("Array is full after adding 10 values. Could not add all 11.", e.getMessage());
+            assertEquals("Array is full after adding 10 values." + 
+                " Could not add all 11.", e.getMessage());
         }
 
         // Ensure that despite the exception, the array is full
         assertTrue(runner.isFull());
     }
 
-    /** Test for hasDuplicates() */
+    /** Test for hasDuplicates(). */
     @Test
     public void testHasDuplicates() {
         runner.addValue(5);

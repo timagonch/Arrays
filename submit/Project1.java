@@ -1,6 +1,13 @@
 import java.util.Random;
-
 import itsc2214.*;
+/**
+ * Project1 class.
+ * Creates an array of integers and provides methods to compute the minimum, 
+ * maximum, range, and average of the elements.
+ * 
+ * @author  Tim Goncharov
+ * @version Fab 04, 2025
+ */
 public class Project1 implements ArrayInt {
 
     private int[] mylist;
@@ -35,14 +42,14 @@ public class Project1 implements ArrayInt {
         if (size == 0){
             return Integer.MIN_VALUE;
         } else {
-        int min = mylist[0];
-        for (int i = 1; i < size; i++){
-            if (mylist[i] < min){
-                min = mylist[i];
+            int min = mylist[0];
+            for (int i = 1; i < size; i++){
+                if (mylist[i] < min){
+                    min = mylist[i];
+                }
             }
+            return min;
         }
-        return min;
-    }
     }
 
     /**
@@ -55,13 +62,13 @@ public class Project1 implements ArrayInt {
         if (size == 0){
             return Integer.MAX_VALUE;
         } else {
-        int max = mylist[0];
-        for (int i = 1; i < size; i++){
-            if (mylist[i] > max){
-                max = mylist[i];
+            int max = mylist[0];
+            for (int i = 1; i < size; i++){
+                if (mylist[i] > max){
+                    max = mylist[i];
+                }
             }
-        }
-        return max;
+            return max;
         }
     }
 
@@ -147,7 +154,8 @@ public class Project1 implements ArrayInt {
     * Retrieves the number at the specified index in the array.
     * @param index the position of the value to be retrieved.
     * @return the integer value at the specified index.
-    * @throws IndexOutOfBoundsException if the index is less than 0 or greater than or equal to the current size.
+    * @throws IndexOutOfBoundsException if the index is less than 0 or
+    *         greater than or equal to the current size.
     */
     public int getValue(int index) throws IndexOutOfBoundsException
     {
@@ -165,11 +173,15 @@ public class Project1 implements ArrayInt {
     * @param index the position of the value to be updated.
     * @param value the new integer value to set at the specified index.
     * @return the old value that was replaced.
-    * @throws IndexOutOfBoundsException if the index is less than 0 or greater than or equal to the current size.
+    * @throws IndexOutOfBoundsException if the index is less than 0 or greater 
+    *         than or equal to the current size.
     */
     public int setValue(int index, int value) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds. Valid range: 0 to " + (size - 1));
+            throw new IndexOutOfBoundsException(
+                "Index " + index + " is out of bounds." + 
+                " Valid range: 0 to " + (size - 1)
+            );
         }
     
         int oldValue = mylist[index]; // Store the old value before replacing
@@ -195,19 +207,23 @@ public class Project1 implements ArrayInt {
 
         // If not all `n` values were added, throw an exception
         if (added < n) {
-            throw new IllegalStateException("Array is full after adding " + added + " values. Could not add all " + n + ".");
+            throw new IllegalStateException("Array is full after adding " + added + 
+            " values. Could not add all " + n + ".");
         }
     }
 
     /**
-    * Removes the value at the specified index by shifting all subsequent elements down by one position.
+    * Removes the value at the specified index by shifting all 
+    * subsequent elements down by one position.
     * 
     * @param index the position of the value to be removed.
-    * @throws IndexOutOfBoundsException if the index is less than 0 or greater than or equal to the current size.
+    * @throws IndexOutOfBoundsException if the index is less than 0 
+    * or greater than or equal to the current size.
     */
     public void removeValueAt(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index >= size) {
-            throw new IndexOutOfBoundsException("Index " + index + " is out of bounds. Valid range: 0 to " + (size - 1));
+            throw new IndexOutOfBoundsException("Index " + index + 
+            " is out of bounds. Valid range: 0 to " + (size - 1));
         }
 
         // Shift all elements to the left, overwriting the element at `index`
