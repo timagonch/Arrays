@@ -97,32 +97,40 @@ public class Project1Test {
     }
 
     /**
-     * Testing adding values to the internal array.
-     */
-    @Test
-    public void testAddValue()
-    {
-       // 1. set up initial conditions
-       // 2. call the method
-       // 3. check expected results
-        runner.addValue(42);
-        assertEquals(42, runner.getValue(0));
-        assertEquals(1, runner.size());
-    }
-
-    /** 
-     * Test for addValue() when the array is full.
-     */
+    * Testing that addValue() throws an exception when adding beyond capacity.
+    */
     @Test
     public void testAddValueWhenFull() {
+        // Fill the array to full capacity
         for (int i = 0; i < runner.getCapacity(); i++) {
             runner.addValue(i);
         }
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
+
+        // Attempt to add one more value beyond capacity
+        try {
             runner.addValue(100);
-        });
-        assertEquals("Array is full", exception.getMessage());
-        
+            fail("Expected IllegalStateException was not thrown");
+        } catch (IllegalStateException e) {
+            assertEquals("Array is full", e.getMessage()); // Verify correct error message
+        }
+    }
+
+    /**
+    * Testing normal behavior of addValue().
+    */
+    @Test
+    public void testAddValue() {
+        try {
+            runner.addValue(42);
+            assertEquals(42, runner.getValue(0));
+            assertEquals(1, runner.size());
+
+            runner.addValue(11);
+            assertEquals(11, runner.getValue(1));
+            assertEquals(2, runner.size());
+        } catch (Exception e) {
+            fail("Exception was thrown unexpectedly: " + e.getMessage());
+        }
     }
 
     /**
@@ -155,83 +163,106 @@ public class Project1Test {
     }
 
     /**
-     * Testing method to replace any value with another.
-     * Should return old value.
-     */
+    * Testing method to replace any value with another.
+    * Should return old value.
+    */
     @Test
-    public void testSetValue()
-    {
-       // 1. set up initial conditions
-       // 2. call the method
-       // 3. check expected results
-        runner.addValue(3);
-        assertEquals(3, runner.setValue(0, 10));
-        assertEquals(10, runner.getValue(0));
+    public void testSetValue() {
+        try {
+            runner.addValue(3);
+            assertEquals(3, runner.setValue(0, 10)); // Check if old value is returned
+            assertEquals(10, runner.getValue(0)); // Ensure the value is updated
+        } catch (Exception e) {
+            fail("Exception was thrown unexpectedly: " + e.getMessage());
+        }
     }
 
-    /** Test for setValue() with an invalid index */
+    /**
+    * Testing setValue() when the index is out of bounds.
+    */
     @Test
     public void testSetValueOutOfBounds() {
-        // Case 1: Attempting to set a value when the array is empty
-        Exception exception1 = assertThrows(IndexOutOfBoundsException.class, () -> 
-        {
+        // Case 1: Setting a value in an empty array
+        try {
             runner.setValue(0, 10); // No elements exist, should throw an exception
-        });
-        assertEquals("Index 0 is out of bounds. Valid range: 0 to -1", exception1.getMessage());
+            fail("Expected IndexOutOfBoundsException was not thrown");
+        } catch (IndexOutOfBoundsException e) {
+            assertEquals("Index 0 is out of bounds. Valid range: 0 to -1", e.getMessage());
+        }
 
         // Add some values to the array
         runner.addValue(5);
         runner.addValue(10);
 
         // Case 2: Setting a value at an out-of-bounds index (greater than size - 1)
-        Exception exception2 = assertThrows(IndexOutOfBoundsException.class, () -> 
-        {
+        try {
             runner.setValue(5, 20); // Index 5 is out of bounds (only 2 elements exist)
-        });
-    
+            fail("Expected IndexOutOfBoundsException was not thrown");
+        } catch (IndexOutOfBoundsException e) {
+            assertEquals("Index 5 is out of bounds. Valid range: 0 to 1", e.getMessage());
+        }
+
         // Case 3: Setting a value at a negative index
-        Exception exception3 = assertThrows(IndexOutOfBoundsException.class, () -> 
-        {
+        try {
             runner.setValue(-1, 15);
-        });
+            fail("Expected IndexOutOfBoundsException was not thrown");
+        } catch (IndexOutOfBoundsException e) {
+            assertEquals("Index -1 is out of bounds. Valid range: 0 to 1", e.getMessage());
+        }
     }
 
-    /**
-     * Testing the removal of values from internal array.
+        /**
+     * Testing the removal of values from the internal array.
      */
     @Test
-    public void testRemoveValueAt()
-    {
-       // 1. set up initial conditions
-       // 2. call the method
-       // 3. check expected results
+    public void testRemoveValueAt() {
+        // 1. Set up initial conditions
         runner.addValue(10);
         runner.addValue(20);
         runner.addValue(30);
+
+        // 2. Remove the second element (index 1)
         runner.removeValueAt(1);
-        assertEquals(30, runner.getValue(1));
-        assertEquals(2, runner.size());
+
+        // 3. Check expected results
+        assertEquals(30, runner.getValue(1)); // 30 should now be at index 1
+        assertEquals(2, runner.size()); // Size should decrease
     }
 
-    /** Test for removeValueAt() with an invalid index */
+    /**
+     * Test for removeValueAt() with an invalid index.
+     */
     @Test
-    public void testRemoveValueAtInvalid() 
-    {
-        Exception exception1 = assertThrows(IndexOutOfBoundsException.class, () -> {
+    public void testRemoveValueAtInvalid() {
+        // Case 1: Removing from an empty array
+        try {
             runner.removeValueAt(0);
-        });
+            fail("Expected IndexOutOfBoundsException was not thrown");
+        } catch (IndexOutOfBoundsException e) {
+            assertEquals("Index 0 is out of bounds. Valid range: 0 to -1", e.getMessage());
+            }
 
+        // Add some values to the array
         runner.addValue(10);
         runner.addValue(20);
 
-        Exception exception2 = assertThrows(IndexOutOfBoundsException.class, () -> {
-            runner.removeValueAt(5);
-        });
+        // Case 2: Removing an index greater than size - 1
+        try {
+            runner.removeValueAt(5); // Only two elements exist (index 0 and 1)
+            fail("Expected IndexOutOfBoundsException was not thrown");
+        } catch (IndexOutOfBoundsException e) {
+            assertEquals("Index 5 is out of bounds. Valid range: 0 to 1", e.getMessage());
+        }
 
-        Exception exception3 = assertThrows(IndexOutOfBoundsException.class, () -> {
+        // Case 3: Removing from a negative index
+        try {
             runner.removeValueAt(-1);
-        });
+            fail("Expected IndexOutOfBoundsException was not thrown");
+        } catch (IndexOutOfBoundsException e) {
+            assertEquals("Index -1 is out of bounds. Valid range: 0 to 1", e.getMessage());
+        }
     }
+
 
     /** Test for getMinimum() */
     @Test
@@ -262,13 +293,18 @@ public class Project1Test {
         assertEquals(12, runner.getRange());
     }
 
-    /** Test for getRange() with empty array */
+    /** 
+     * Test for getRange() with an empty array 
+     */
     @Test
     public void testGetRangeEmpty() {
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
+        // Attempt to compute range on an empty array
+        try {
             runner.getRange();
-        });
-        assertEquals("Cannot compute range of an empty data structure.", exception.getMessage());
+            fail("Expected IllegalStateException was not thrown");
+        } catch (IllegalStateException e) {
+            assertEquals("Cannot compute range of an empty data structure.", e.getMessage());
+        }
     }
 
     /** Test for getAverage() */
@@ -280,13 +316,18 @@ public class Project1Test {
         assertEquals(10.0, runner.getAverage(), 0.001);
     }
 
-    /** Test for getAverage() with empty array */
+    /** 
+     * Test for getAverage() with an empty array 
+     */
     @Test
     public void testGetAverageEmpty() {
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
+        // Attempt to compute average on an empty array
+        try {
             runner.getAverage();
-        });
-        assertEquals("Cannot calculate average of an empty array.", exception.getMessage());
+            fail("Expected IllegalStateException was not thrown");
+        } catch (IllegalStateException e) {
+            assertEquals("Cannot calculate average of an empty array.", e.getMessage());
+        }
     }
 
     /** Test for addRandom() */
@@ -296,13 +337,21 @@ public class Project1Test {
         assertEquals(5, runner.size());
     }
 
-    /** Test for addRandom() exceeding capacity */
+    /** 
+     * Test for addRandom() exceeding capacity 
+     */
     @Test
     public void testAddRandomExceedingCapacity() {
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
+        // Attempt to add more values than the array can hold
+        try {
             runner.addRandom(11);
-        });
-        // Ensure that despite the exception, the array still has 10 elements.
+            fail("Expected IllegalStateException was not thrown");
+        } catch (IllegalStateException e) {
+            // Ensure the error message matches expected output
+            assertEquals("Array is full after adding 10 values. Could not add all 11.", e.getMessage());
+        }
+
+        // Ensure that despite the exception, the array is full
         assertTrue(runner.isFull());
     }
 
